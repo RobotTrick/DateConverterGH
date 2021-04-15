@@ -5,11 +5,11 @@ from pyrogram.types import *
 
 class Msg:
 
-    today_btn = "התאריך היום"
-    convert_btn = "המרת תאריך"
-    error_format = "פורמט שגוי. לחץ כאן!"
-    error_unknow = "שגיאה לא ידועה :("
-    nav_btn = 'להסבר שימוש לחץ כאן'
+    today_btn = "🗓 התאריך היום 🗓"
+    convert_btn = "🔄 המרת תאריך 🔄"
+    error_format = "פורמט שגוי. לחץ כאן 🔘"
+    error_unknow = "⚠️ שגיאה לא ידועה ⚠️"
+    nav_btn = 'להסבר שימוש לחץ כאן 🔘'
 
     def json_to_msg(json: dict, answer: bool = False) -> Union[str, InRes]:
         full_ge = lambda d: f"{d['gd']}/{d['gm']}/{d['gy']}"
@@ -22,26 +22,28 @@ class Msg:
         else:
             res = InRes(
                 json['hebrew'] + " ~ " + full_ge(json),
-                InTXT(f"**תאריך עברי:** {json['hebrew']}\n\n**תאריך לועזי:** {full_ge(json)}")
+                InTXT(f"**תאריך עברי:** {json['hebrew']}\n\n**תאריך לועזי:** {full_ge(json)}"),
+                thumb_url="https://telegra.ph/file/2388b677bba4403ee2f7e.png"
             )
             return res
 
     def format_help(message: Message):
         txt = "שימו לב, החיפוש תומך במגוון רחב של פורמטים לנוחיותכם.\n"
         txt += "לדוגמה, תוכלו להשתמש באחד מהפורמטים הבאים:\n"
-        txt += "`@DateConverterHGbot <תאריך להמרה>`\n"
+        txt += "\n`@DateConverterHGbot <תאריך להמרה>`\n\n"
         txt += """```כ"א סיוון תשע"א
 ט' כסליו תש"פ
 א סיון תשעז
 
 ```"""
         txt += "ובמקביל, בלועזי:\n"
-        txt += """```01/12/2021
+        txt += """```01/05/2015
 1-5-15
-23 10 1999```
+1 5 2015```
 
 """
         txt += "עם זאת, הבוט תומך כרגע בטווח תאריכים הגיוני ונורמלי, ללא התחייבות לתאריכים רחוקים מידי."
+        txt += "\nלחיפוש תאריך בחודש אדר ב', הזינו: `אדר-ב`."
 
         message.reply(txt, reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("לחיפוש תאריך", switch_inline_query_current_chat="")]]

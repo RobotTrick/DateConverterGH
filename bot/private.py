@@ -26,7 +26,7 @@ def today(_, message: CallbackQuery):
     message.message.edit_text(Msg.json_to_msg(_2day))
 
 
-he_re = r"^(?P<day>[א-ת\"' ]{1,4})[ ]+(?P<month>[א-ת]*)[ ]+(?P<year>[א-ת\"']*)"
+he_re = r"^(?P<day>[א-ת\"' ]{1,4})[ ]+(?P<month>[א-ת-]*)[ ]+(?P<year>[א-ת\"']*)"
 
 @Client.on_inline_query(filters.regex(he_re))
 def he2ge(_, inline: InlineQuery):
