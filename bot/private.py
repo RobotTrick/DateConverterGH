@@ -14,7 +14,7 @@ def start_msg(_, message: Message):
         return
 
     message.reply(Msg.start_msg(message),
-                  reply_markup=InlineKeyboardMarkup([
+    disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup([
                       [InlineKeyboardButton(Msg.convert_btn, switch_inline_query_current_chat="")],
                       [InlineKeyboardButton(Msg.today_btn, "today")]
                   ]))
@@ -31,6 +31,10 @@ he_re = r"^(?P<day>[א-ת\"' ]{1,4})[ ]+(?P<month>[א-ת]*)[ ]+(?P<year>[א-ת\"
 @Client.on_inline_query(filters.regex(he_re))
 def he2ge(_, inline: InlineQuery):
     groups = inline.matches[0].groupdict()
+
+    if groups["month"].startswith("ב"):
+        groups["month"] = groups["month"][1:]
+
     day, month, year = return_day(groups['day']), return_month(groups['month']), return_year(groups['year'])
 
     if day and month and year:

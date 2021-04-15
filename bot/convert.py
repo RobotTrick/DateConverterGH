@@ -30,7 +30,7 @@ he_month = {"Nisan": ["ניסן"],
             "Tevet": ["טבת"],
             "Shvat": ["שבט"],
             "Adar1": ["אדר"],
-            "Adar2": ["אדר ב'", "אדר ב"]}
+            "Adar2": ["אדר-ב'", "אדר-ב"]}
 
 
 def return_month(month: str) -> Union[str, bool]:

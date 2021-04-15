@@ -1,3 +1,4 @@
 config.ini
 date_convert.session
 .idea
+*pyc
