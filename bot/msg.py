@@ -4,22 +4,23 @@ from pyrogram.types import *
 
 
 class Msg:
-
     today_btn = "🗓 התאריך היום 🗓"
     convert_btn = "🔄 המרת תאריך 🔄"
     error_format = "פורמט שגוי. לחץ כאן 🔘"
     error_unknow = "⚠️ שגיאה לא ידועה ⚠️"
     nav_btn = 'להסבר שימוש לחץ כאן 🔘'
 
+
     def json_to_msg(json: dict, answer: bool = False) -> Union[str, InRes]:
+        """ convert the answer from the api, to msg format """
         full_ge = lambda d: f"{d['gd']}/{d['gm']}/{d['gy']}"
 
-        if not answer:
+        if not answer:  # simple telegram message
             msg = f'**תאריך עברי:** {json["hebrew"]}\n\n'
             msg += f'**תאריך לועזי:** {full_ge(json)}'
             return msg
 
-        else:
+        else:  # inline telegram message
             res = InRes(
                 json['hebrew'] + " ~ " + full_ge(json),
                 InTXT(f"**תאריך עברי:** {json['hebrew']}\n\n**תאריך לועזי:** {full_ge(json)}"),
@@ -27,7 +28,9 @@ class Msg:
             )
             return res
 
+
     def format_help(message: Message):
+        """ return a help and support message """
         txt = "שימו לב, החיפוש תומך במגוון רחב של פורמטים לנוחיותכם.\n"
         txt += "לדוגמה, תוכלו להשתמש באחד מהפורמטים הבאים:\n"
         txt += "\n`@DateConverterHGbot <תאריך להמרה>`\n\n"
@@ -49,10 +52,12 @@ class Msg:
             [[InlineKeyboardButton("לחיפוש תאריך", switch_inline_query_current_chat="")]]
         ))
 
+
     def start_msg(msg: Message):
-        txt = f"""היי {msg.from_user.mention}!
-ברובוט זה תוכלו להמיר תאריך עברי ללועזי באופן דו צדדי.
-אופן השימוש פשוט וקל, הקלידו בכל צ'אט את יוזר הבוט, ואחריו את התאריך שתרצו להמיר. הרובוט יציג בפניכם את התאריך המבוקש בלועזי ובעברי.
+        """ return a start message """
+        txt = f"""היי {msg.from_user.mention}! ברובוט זה תוכלו להמיר תאריך עברי ללועזי באופן דו צדדי. אופן השימוש 
+        פשוט וקל, הקלידו בכל צ'אט את יוזר הבוט, ואחריו את התאריך שתרצו להמיר. הרובוט יציג בפניכם את התאריך המבוקש 
+        בלועזי ובעברי. 
 
 מעוניינים בפירוט נוסף? שלחו לבוט /help.
 

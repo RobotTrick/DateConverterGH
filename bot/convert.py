@@ -1,3 +1,5 @@
+# this is a part of "DataConverterBOT" by @YeudaBy (https://m100achuz.ml)
+
 import requests
 from typing import Union
 
@@ -10,6 +12,7 @@ def convert(
         month: Union[str, int],
         year: int,
         to_hebrew: bool = True) -> dict:
+    """ Gets a date (he/ge) as numbers, and returns them from the api """
     url = URL
     flag = "g" if not to_hebrew else "h"
     url += f"{flag}y={year}&{flag}m={month}&{flag}d={day}&"
@@ -35,7 +38,7 @@ he_month = {"Nisan": ["ניסן"],
 
 def return_month(month: str) -> Union[str, bool]:
     """
-    from [חשוון] to Cheshvan
+    from [חשוון] to Cheshvan. used to send the query from th user to api.
     """
 
     for m_en in he_month:
@@ -83,7 +86,7 @@ he_days = {
 
 def return_day(day: str) -> Union[str, int, bool]:
     """
-    from [כ"א, ט"ו, י'] to [21, 15, 10]
+    from [כ"א, ט"ו, י'] to [21, 15, 10]. used to send the query from the user to api.
     """
     day = day.replace('"', "").replace("''", "").replace("'", "")
 
@@ -121,7 +124,7 @@ he_years = {
 
 def return_year(year: str) -> Union[bool, int]:
     """
-    from [תשל"ח, תש"פ] to [5738, 5780]
+    from [תשל"ח, תש"פ] to [5738, 5780]. used to send the query from the user to api.
     """
     year = year.replace("תש", "").replace('"', "").replace("'", "")
 

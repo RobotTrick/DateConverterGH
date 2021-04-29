@@ -1,4 +1,4 @@
-# this bot create by YeudaBy https://t.me/m100achuz
+# this bot create by YeudaBy https://m100achuz.ml
 # The code is open source, and may not be used for commercial or income purposes.
 # Please do not rely on the bot for important things.
 

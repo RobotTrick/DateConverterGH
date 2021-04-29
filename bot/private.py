@@ -1,3 +1,5 @@
+# this is a part of "DataConverterBOT" by @YeudaBy (https://m100achuz.ml)
+
 from pyrogram import Client, filters
 from pyrogram.types import *
 
@@ -9,31 +11,34 @@ import requests
 
 @Client.on_message(filters.text & filters.command("start"))
 def start_msg(_, message: Message):
-    if len(message.command) > 1:
+    if len(message.command) > 1:  # help message
         Msg.format_help(message)
         return
 
-    message.reply(Msg.start_msg(message),
-    disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup([
-                      [InlineKeyboardButton(Msg.convert_btn, switch_inline_query_current_chat="")],
-                      [InlineKeyboardButton(Msg.today_btn, "today")]
-                  ]))
+    message.reply(Msg.start_msg(message),  # Normal start message
+                  disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(Msg.convert_btn, switch_inline_query_current_chat="")],
+            [InlineKeyboardButton(Msg.today_btn, "today")]
+        ]))
 
 
 @Client.on_callback_query()
 def today(_, message: CallbackQuery):
+    """ edit the message to date of today """
     _2day = requests.get(URL).json()
     message.message.edit_text(Msg.json_to_msg(_2day))
+
 
 
 he_re = r"^(?P<day>[א-ת\"' ]{1,4})[ ]+(?P<month>[א-ת-]*)[ ]+(?P<year>[א-ת\"']*)"
 
 @Client.on_inline_query(filters.regex(he_re))
 def he2ge(_, inline: InlineQuery):
+    """ כ' ניסן תשעו -> 20/Nissan/5776 """
     groups = inline.matches[0].groupdict()
 
-    if groups["month"].startswith("ב"):
-        groups["month"] = groups["month"][1:]
+    if groups["month"].startswith("ב"):  # {כ' בניסן}
+        groups["month"] = groups["month"][1:]  # {כ' ניסן}
 
     day, month, year = return_day(groups['day']), return_month(groups['month']), return_year(groups['year'])
 
@@ -45,10 +50,12 @@ def he2ge(_, inline: InlineQuery):
         inline.answer([], switch_pm_text=Msg.error_format, switch_pm_parameter="format")
 
 
+
 ge_re = r"^(?P<day>[0-3]?\d)[ \/.-]*(?P<month>\d{1,2})[ \/.-]*(?P<year>\d{2,4})$"
 
 @Client.on_inline_query(filters.regex(ge_re))
 def ge2he(_, inline: InlineQuery):
+    """ 29/4/21 -> יז אייר תשפא """
     groups = inline.matches[0].groupdict()
     day, month, year = int(groups['day']), int(groups['month']), int(groups['year'])
 
@@ -63,15 +70,17 @@ def ge2he(_, inline: InlineQuery):
             inline.answer([], switch_pm_text=Msg.error_unknow, switch_pm_parameter="-")
 
     else:
-        inline.answer([], switch_pm_text= Msg.error_format, switch_pm_parameter="format")
+        inline.answer([], switch_pm_text=Msg.error_format, switch_pm_parameter="format")
 
 
 @Client.on_inline_query()
 def meta(_, inline: InlineQuery):
+    """ help message when the query is empty """
     if inline.offset == "":
         inline.answer([], switch_pm_text=Msg.nav_btn, switch_pm_parameter="-")
 
 
 @Client.on_message(filters.command('help'))
 def help(_, message: Message):
+    """ help message when message command is 'help' """
     Msg.format_help(message)
